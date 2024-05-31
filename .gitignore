@@ -1,0 +1,10 @@
+# Files
+Doxyfile
+
+# Dirs
+docs/html/
+docs/latex/
+bin/
+logs/
+build/
+.cache/
