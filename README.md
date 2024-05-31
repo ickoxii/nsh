@@ -1,8 +1,7 @@
 # The Nano Shell 
 
-Author: Icko X Iben
-Date Created: 05/31/2024 01:21 UTC-8
-
+Author: Icko X Iben  
+Date Created: 05/31/2024 01:21 UTC-8  
 
 ---
 
