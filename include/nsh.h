@@ -32,11 +32,23 @@ typedef int Bool;
 #define FALSE 0
 #endif
 
-/** Prototypes */
+#define NSH_BUFF_SIZE 128
 
-void nsh_loop(void);
-void nsh_cd(char**);
-void nsh_help(char**);
-void nsh_exit(char**);
+/** Function pointers for builtin commands **/
+
+
+/** Prototypes **/
+void nsh_loop(void); /** Main loop **/
+
+/** Commands **/
+int nsh_cd(char**);         /* Change directory */
+int nsh_help(char**);       /* Help function */
+int nsh_exit(char**);       /* Terminate shell */
+
+/** Helpers **/
+int nsh_launch(char**);     /* Launch program */
+char* nsh_get_line(void);   /* Read line from stdin */
+char** nsh_parse(char*);    /* Parse command */
+int nsh_execute(char**);    /* Execute command */
 
 #endif
