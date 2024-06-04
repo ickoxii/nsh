@@ -10,16 +10,8 @@
  *
  *****************************************************************************/
 
-/** Includes */
+/** Includes **/
 #include "nsh.h"
-
-
-/** Supported commands */
-char *commands[] = {
-    "cd",
-    "help",
-    "exit"
-};
 
 
  /**
