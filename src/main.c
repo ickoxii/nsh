@@ -2,7 +2,7 @@
  * 
  * @file        main.c
  *
- * @author      Icko X Iben
+ * @author      Icko X. Iben
  *
  * @date        Friday, 31 May 2024
  *

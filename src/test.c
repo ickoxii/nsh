@@ -2,7 +2,7 @@
  *
  * @file        test.c
  *
- * @author      Icko Xiaoyoung Iben
+ * @author      Icko X. Iben
  *
  * @date        Monday, 3 June 2024
  *
