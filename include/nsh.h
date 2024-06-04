@@ -34,8 +34,11 @@ typedef int Bool;
 
 #define NSH_BUFF_SIZE 128
 
-/** Function pointers for builtin commands **/
-
+typedef struct {
+    char *line;
+    int size;
+    int capacity;
+} Buffer;
 
 /** Prototypes **/
 void nsh_loop(void); /** Main loop **/
@@ -47,8 +50,9 @@ int nsh_exit(char**);       /* Terminate shell */
 
 /** Helpers **/
 int nsh_launch(char**);     /* Launch program */
-char* nsh_get_line(void);   /* Read line from stdin */
+Buffer nsh_get_line(void);  /* Read line from stdin */
 char** nsh_parse(char*);    /* Parse command */
 int nsh_execute(char**);    /* Execute command */
+Buffer init_buffer(void);
 
 #endif

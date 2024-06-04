@@ -36,16 +36,20 @@ int main(int argc, char **argv) {
     fputs(str, test_file_ptr);
     rewind(test_file_ptr);      /* Rewind file to beginning for reads */
 
-    char *buff = (char*)malloc(NSH_BUFF_SIZE * sizeof(char));
+    Buffer buffer;
+    buffer.capacity = NSH_BUFF_SIZE;
+    buffer.size = 0;
+    buffer.line = (char*)malloc(NSH_BUFF_SIZE * sizeof(char));
 
     char ch;
     int ndx = 0;
     while((ch = fgetc(test_file_ptr)) != '\n') {
-        buff[ndx++] = ch;
+        buffer.line[ndx++] = ch;
         if(ndx >= NSH_BUFF_SIZE) {
             char *tmp;
-            tmp = (char*)realloc(buff, (SIZE + NSH_BUFF_SIZE) * sizeof(char));
-            buff = tmp;
+            tmp = (char*)realloc(buffer.line, (buffer.size + NSH_BUFF_SIZE) * sizeof(char)); /* FIXME: bad impl */
+            buffer.line = tmp;
+            buffer.capacity += NSH_BUFF_SIZE;
         }
     }
 

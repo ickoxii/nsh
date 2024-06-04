@@ -30,7 +30,6 @@ char *builtin_commands[] = {
   *   3. **Execute**: Run the parsed command.
   * */
 void nsh_loop(void) {
-    char *line;
     char **args;
     int status;
 
@@ -39,13 +38,15 @@ void nsh_loop(void) {
         printf("%s> ", pwd);
         free(pwd);
 
-        line = nsh_get_line();      /* Read */
-        args = nsh_parse(line);     /* Parse */
-        status = nsh_execute(args); /* Execute */
+        Buffer buffer = nsh_get_line();     /* Read */
+        args = nsh_parse(buffer.line);      /* Parse */
+        status = nsh_execute(args);         /* Execute */
 
-        printf("%s\n", line);
+        #ifdef DEBUG
+        printf("%s\n", buffer.line);
+        #endif
 
-        free(line);
+        free(buffer.line);
         /* free(args); */
     } while (status);
 }
@@ -118,3 +119,11 @@ int nsh_execute(char** args) {
     // TODO
 }
 #pragma GCC diagnostic pop
+
+Buffer init_buffer(void) {
+    Buffer buffer;
+    buffer.size = 0;
+    buffer.capacity = NSH_BUFF_SIZE;
+    buffer.line = malloc(NSH_BUFF_SIZE * sizeof(char));
+    return buffer;
+}
