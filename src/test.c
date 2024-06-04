@@ -14,20 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIZE (sizeof(buff) / sizeof(buff[0])) /* Terrible, only use for arrays, not malloc'd pointers */
-
-typedef struct {
-    char *str;
-    int size;
-} Buffer;
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int main(int argc, char **argv) {
     FILE *test_file_ptr = tmpfile();
     
     if(!test_file_ptr) {
-        perror("test_file_ptr load fail");
+        fprintf(stderr, "test_file_ptr load fail");
         return EXIT_FAILURE;
     }
 
