@@ -24,12 +24,15 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int main(int argc, char **argv) {
-    /** Load config files */
+    /* Load config files */
+    #ifdef DEBUG
+    printf("Debug mode enabled\n");
+    #endif
 
-    /** Enter shell loop */
+    /* Enter shell loop */
     nsh_loop();
 
-    /** Free memory and terminate */
+    /* Free memory and terminate */
 
     return EXIT_SUCCESS;
 }
