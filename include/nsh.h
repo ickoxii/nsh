@@ -32,13 +32,10 @@ typedef int Bool;
 #define FALSE 0
 #endif
 
-#define NSH_BUFF_SIZE 128
-
-typedef struct {
-    char *line;
-    int size;
-    int capacity;
-} Buffer;
+#define NSH_BUFF_SIZE 1024
+#define NSH_DELIMS " \t\r\n\a"
+#define NSH_TOK_SIZE 64
+#define NUM_BUILTINS 4
 
 /** Prototypes **/
 void nsh_loop(void); /** Main loop **/
@@ -47,12 +44,12 @@ void nsh_loop(void); /** Main loop **/
 int nsh_cd(char**);         /* Change directory */
 int nsh_help(char**);       /* Help function */
 int nsh_exit(char**);       /* Terminate shell */
+int nsh_ls(char**);         /* List directory */
 
 /** Helpers **/
 int nsh_launch(char**);     /* Launch program */
-Buffer nsh_get_line(void);  /* Read line from stdin */
-char** nsh_parse(char*);    /* Parse command */
+char* nsh_getline(void);    /* Read line from stdin */
+char** nsh_tokenize(char*); /* Parse command */
 int nsh_execute(char**);    /* Execute command */
-Buffer init_buffer(void);
 
 #endif

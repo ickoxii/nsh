@@ -12,7 +12,10 @@
 
 /** Includes **/
 #include "nsh.h"
+#include "logger.h"
+#include <assert.h>
 
+FILE *logFile = NULL;
 
  /**
   * @brief  Main entrypoint
@@ -21,13 +24,17 @@
   * @param  argv    Argument vector
   * @return status code
   * */
+static_assert(TRUE, "Dummy declaration to workaround https://github.com/clangd/clangd/issues/1167");
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int main(int argc, char **argv) {
-    /* Load config files */
-    #ifdef DEBUG
+    /* Are we cooking? */
+#ifdef DEBUG
+    logFile = fopen(LOG_FILE_NAME, "a"); /* Open in append mode */
     printf("Debug mode enabled\n");
-    #endif
+#endif
+
+    /* Load config files */
 
     /* Enter shell loop */
     nsh_loop();
