@@ -89,7 +89,26 @@ int nsh_ls(char** args) {
 #ifdef DEBUG
     printf("Inside nsh_ls\n");
 #endif
-    /* TODO */
+    DIR *dir;
+
+    if(args[1] == NULL) {
+        dir = opendir(".");
+    } else {
+        dir = opendir(args[1]);
+    }
+
+    if(dir == NULL) {
+        fprintf(stderr, "Could not open directory\n");
+        return 1;
+    }
+
+    struct dirent *entry;
+
+    while((entry = readdir(dir)) != NULL) {
+        printf("%s\n", entry->d_name);
+    }
+
+    closedir(dir);
 
     return 1;
 }
