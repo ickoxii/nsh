@@ -2,7 +2,7 @@
  *
  * @file        nsh.h
  *
- * @author      Icko X Iben
+ * @author      Icko X. Iben
  *
  * @date        Friday, 31 May 2024
  *
@@ -13,26 +13,17 @@
 #ifndef NSH_H
 #define NSH_H
 
-/** Includes */
+/** Includes **/
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 
-/** Defines */
-#ifndef EXIT_SUCCESS
-#define EXIT_SUCCESS 0
-#endif
-
-#ifndef EXIT_FAILURE
-#define EXIT_FAILURE 1
-#endif
-
-#ifndef BOOL
-#define BOOL char
-#endif
+/** Defines **/
+typedef int Bool;
 
 #ifndef TRUE
 #define TRUE 1
@@ -42,11 +33,24 @@
 #define FALSE 0
 #endif
 
-/** Prototypes */
+#define NSH_BUFF_SIZE 1024
+#define NSH_DELIMS " \t\r\n\a"
+#define NSH_TOK_SIZE 64
+#define NUM_BUILTINS 4
 
-void nsh_loop(void);
-void nsh_cd(char**);
-void nsh_help(char**);
-void nsh_exit(char**);
+/** Prototypes **/
+void nsh_loop(void); /** Main loop **/
+
+/** Commands **/
+int nsh_cd(char**);         /* Change directory */
+int nsh_help(char**);       /* Help function */
+int nsh_exit(char**);       /* Terminate shell */
+int nsh_ls(char**);         /* List directory */
+
+/** Helpers **/
+int nsh_launch(char**);     /* Launch program */
+char* nsh_getline(void);    /* Read line from stdin */
+char** nsh_tokenize(char*); /* Parse command */
+int nsh_execute(char**);    /* Execute command */
 
 #endif
