@@ -115,7 +115,7 @@ int nsh_ls(char** args) {
 #pragma GCC diagnostic pop
 
 /**
- * nsh_cs
+ * nsh_cd
  *
  * Change directories.
  * */
