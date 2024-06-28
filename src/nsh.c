@@ -29,6 +29,32 @@ int (*builtin_funcs[])(char**) = {
     nsh_ls
 };
 
+/** Big debugger guy */
+#ifdef DEBUG
+#define DEBUG_PRINT(...) fprintf(stdout, __VA_ARGS__)
+#else
+#define DEBUG_PRINT(...) do {} while(0)
+#endif
+
+#ifdef DEBUG
+#define DEBUG_PRINT_ERR(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define DEBUG_PRINT_ERR(...) do {} while(0)
+#endif
+
+#ifdef DEBUG
+#define DEBUG_PRINT_TOKENS(args) do {\
+    int pos = 0;\
+    DEBUG_PRINT("tokens\n");\
+    while(args[pos] != NULL) {\
+        DEBUG_PRINT("tok[%d]: %s\n", pos, args[pos]);\
+        ++pos;\
+    }\
+} while(0)
+#else
+#define DEBUG_PRINT_TOKENS(args) do {} while(0)
+#endif
+
  /**
   * @brief Main loop
   *
@@ -38,9 +64,7 @@ int (*builtin_funcs[])(char**) = {
   *   3. **Execute**: Run the parsed command.
   * */
 void nsh_loop(void) {
-#ifdef DEBUG
-    printf("Inside nsh_loop\n");
-#endif
+    DEBUG_PRINT("Inside nsh_loop\n");
 
     char *line;
     char **args;
@@ -53,20 +77,11 @@ void nsh_loop(void) {
 
         line = nsh_getline();               /* Read */
 
-#ifdef DEBUG
-        printf("line: %s\n", line);
-        int pos = 0;
-#endif
+        DEBUG_PRINT("line: %s\n", line);
 
         args = nsh_tokenize(line);          /* Parse */
 
-#ifdef DEBUG
-        printf("tokens\n");
-        while(args[pos] != NULL) {
-            printf("tok[%d]: %s\n", pos, args[pos]);
-            pos++;
-        }
-#endif
+        DEBUG_PRINT_TOKENS(args);
 
         status = nsh_execute(args);         /* Execute */
 
@@ -144,11 +159,12 @@ int nsh_help(char** args) {
     printf("Inside nsh_help\n");
 #endif
 
-    printf("Welcome to nsh, the [N]ano [SH]ell!\n");
-    printf("Below is a list of supported commands\n");
+    printf("\nWelcome to nsh, the [N]ano [SH]ell!\n");
+    printf("Below is a list of built-in commands:\n");
     for(int i = 0; i < NUM_BUILTINS; ++i) {
         printf("  %s\n", builtin_commands[i]);
     }
+    printf("\n");
 
     return 1;
 }
