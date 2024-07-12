@@ -6,6 +6,9 @@
   *     https://opensource.apple.com/source/xnu/xnu-201.5/bsd/sys/syslimits.h.auto.html
   * */
 
+#ifndef SYS_CHECK_H_
+#define SYS_CHECK_H_
+
 #include <stdio.h>
 
 /**

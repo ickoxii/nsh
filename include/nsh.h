@@ -10,8 +10,8 @@
  *
  *****************************************************************************/
 
-#ifndef NSH_H
-#define NSH_H
+#ifndef NSH_H_
+#define NSH_H_
 
 /** Includes **/
 #include <sys/wait.h>

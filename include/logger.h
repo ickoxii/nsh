@@ -10,8 +10,8 @@
  *
  *****************************************************************************/
 
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef LOGGER_H_
+#define LOGGER_H_
 
 #include <stdio.h>
 
