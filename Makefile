@@ -1,59 +1,44 @@
 #!/usr/bin/make -f
 
-# >>>> VARS >>>>
-srcdir = ./src
-includedir = ./include
-builddir = ./build
-bindir = ./bin
-doxydir = ./docs/html ./docs/latex
+VERSION = 0.1
 
-MAIN = main.c
-CFILES = nsh.c
-EXE = a.out
+# Search for .c files in src/ and .h files in include/
+# (small hammer)
+vpath %.c src
+vpath %.h include
 
-CDEBUG = -g
+# Compilation options
+CFLAGS = -Wall -Werror -Wextra -Wpedantic
+INCLUDES = -I include
+CC = clang
+PROGRAM = nsh
 
-TMAIN = test.c
-TEXE = test.out
+# COMPILE.c = $(CC) $(CFLAGS) $(INCLUDES) $(CPPFLAGS) $(TARGET_ARCH) -c
 
-CFLAGS=-Iinclude -Wall -Wextra -Werror -Wpedantic
-# <<<< VARS <<<<
-
-# >>>> PHONIES >>>>
-.PHONY: all
-all: build run
-
-.PHONY: debug
-debug: src/main.c src/nsh.c include/nsh.h
-	clang -DDEBUG -o $(bindir)/$(EXE) $(CFLAGS) src/main.c src/nsh.c
+SOURCES = main.c nsh.c
+OBJECTS = $(SOURCES:.c=.o)
+DEPS = $(SOURCES:.c=.d)
+OUTPUT_OPTION = -o $@
 
 .PHONY: build
-build: src/main.c src/nsh.c include/nsh.h
-	clang -o $(bindir)/$(EXE) $(CFLAGS) $(srcdir)/$(MAIN) $(srcdir)/$(CFILES)
+build: $(DEPS) $(PROGRAM) cleanup ## Default target
 
-.PHONY: run
-run:
-	$(bindir)/$(EXE)
+$(PROGRAM): $(OBJECTS) ## Linking rule
 
-.PHONY: verify
-verify: src/main.c src/nsh.c include/nsh.h
-	clangd --check=src/main.c --check=src/nsh.c --check=include/nsh.h
+%.o: %.c ## Generic compilation rule
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-.PHONY: build-test
-build-test: src/test.c src/nsh.c include/nsh.h
-	clang $(CFLAGS) $(srcdir)/$(TMAIN) $(srcdir)/$(CFILES) -o $(bindir)/$(TEXE)
+%.d: %.c ## Generic dependency rule
+	$(CC) -M $(INCLUDES) $< > $@
 
-.PHONY: run-test
-run-test:
-	$(bindir)/$(TEXE)
-
+.PHONY: cleanup
+cleanup: ## Clean objects after generating executable
+	rm -f $(OBJECTS)
+	
 .PHONY: clean
-clean:
-	rm -f $(bindir)/*
-	rm -rf $(doxydir)
-	find $(builddir)/ -type f ! -name compile_commands.json -exec rm {} +
-# <<<< PHONIES <<<<
+clean: ## Clean object, dependency and binary files
+	rm -f $(OBJECTS) $(PROGRAM) $(DEPS)
 
-# >>>> RULES >>>>
-
-# <<<< RULES <<<<
+.PHONY: help
+help: ## Help function
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
