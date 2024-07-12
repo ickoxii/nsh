@@ -71,8 +71,6 @@ void nsh_loop(void) {
  * List the contents of the current directory. If passed an argument,
  * list the contents of that directory.
  * */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 int nsh_ls(char** args) {
     DEBUG_PRINT("Inside nsh_ls\n");
     DIR *dir;
@@ -98,7 +96,6 @@ int nsh_ls(char** args) {
 
     return 1;
 }
-#pragma GCC diagnostic pop
 
 /**
  * nsh_cd
@@ -154,9 +151,7 @@ int nsh_exit(char** args) {
  * Launches a program (i.e. not a builtin function) and waits for it to execute.
  * */
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
-#pragma GCC diagnostic ignored "-Wreturn-type"
 int nsh_launch(char** args) {
     DEBUG_PRINT("Inside nsh_launch\n");
 
@@ -280,9 +275,6 @@ char** nsh_tokenize(char* line) {
  *
  * Either calls a builtin function or launches a program.
  * */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wreturn-type"
 int nsh_execute(char** args) {
     DEBUG_PRINT("Inside nsh_execute\n");
 
@@ -301,4 +293,3 @@ int nsh_execute(char** args) {
 
     return nsh_launch(args);
 }
-#pragma GCC diagnostic pop
