@@ -11,7 +11,6 @@
  *****************************************************************************/
 
 #include "nsh.h"
-#include <stdlib.h>
 
 /** Builtin commands */
 char *builtin_commands[] = {
@@ -28,32 +27,6 @@ int (*builtin_funcs[])(char**) = {
     nsh_exit,
     nsh_ls
 };
-
-/** Big debugger guy */
-#ifdef DEBUG
-#define DEBUG_PRINT(...) fprintf(stdout, __VA_ARGS__)
-#else
-#define DEBUG_PRINT(...) do {} while(0)
-#endif
-
-#ifdef DEBUG
-#define DEBUG_PRINT_ERR(...) fprintf(stderr, __VA_ARGS__)
-#else
-#define DEBUG_PRINT_ERR(...) do {} while(0)
-#endif
-
-#ifdef DEBUG
-#define DEBUG_PRINT_TOKENS(args) do {\
-    int pos = 0;\
-    DEBUG_PRINT("tokens\n");\
-    while(args[pos] != NULL) {\
-        DEBUG_PRINT("tok[%d]: %s\n", pos, args[pos]);\
-        ++pos;\
-    }\
-} while(0)
-#else
-#define DEBUG_PRINT_TOKENS(args) do {} while(0)
-#endif
 
  /**
   * @brief Main loop
@@ -101,9 +74,7 @@ void nsh_loop(void) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int nsh_ls(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_ls\n");
-#endif
+    DEBUG_PRINT("Inside nsh_ls\n");
     DIR *dir;
 
     if(args[1] == NULL) {
@@ -135,9 +106,7 @@ int nsh_ls(char** args) {
  * Change directories.
  * */
 int nsh_cd(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_cd\n");
-#endif
+    DEBUG_PRINT("Inside nsh_cs\n");
 
     if(args[1] == NULL) {
         fprintf(stderr, "Expected argument to `cd`\n");
@@ -155,9 +124,7 @@ int nsh_cd(char** args) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int nsh_help(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_help\n");
-#endif
+    DEBUG_PRINT("Inside nsh_help\n");
 
     printf("\nWelcome to nsh, the [N]ano [SH]ell!\n");
     printf("Below is a list of built-in commands:\n");
@@ -173,9 +140,7 @@ int nsh_help(char** args) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int nsh_exit(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_exit\n");
-#endif
+    DEBUG_PRINT("Inside nsh_exit\n");
 
     return 0;
 }
@@ -208,9 +173,7 @@ int nsh_launch(char** args) {
  * not allow for a command to span multiple lines.
  * */
 char* nsh_getline(void) {
-#ifdef DEBUG
-    printf("Inside nsh_getline\n");
-#endif
+    DEBUG_PRINT("Inside nsh_getline\n");
 
     char* line = malloc(NSH_BUFF_SIZE * sizeof(char));
     int buff_capacity = NSH_BUFF_SIZE;
@@ -255,9 +218,7 @@ char* nsh_getline(void) {
  * Tokenizes the line input by user.
  * */
 char** nsh_tokenize(char* line) {
-#ifdef DEBUG
-    printf("Inside nsh_tokenize\n");
-#endif
+    DEBUG_PRINT("Inside nsh_tokenize\n");
 
     int buff_size = NSH_TOK_SIZE;
     char **tokens = malloc(buff_size * sizeof(char));
@@ -304,9 +265,7 @@ char** nsh_tokenize(char* line) {
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 int nsh_execute(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_execute\n");
-#endif
+    DEBUG_PRINT("Inside nsh_execute\n");
 
     if(args[0] == NULL) {
         printf("Empty command\n");
@@ -316,9 +275,7 @@ int nsh_execute(char** args) {
 
     for(int i = 0; i < NUM_BUILTINS; ++i) {
         if(strcmp(builtin_commands[i], args[0]) == 0) {
-#ifdef DEBUG
-            printf("Calling %s from nsh_execute\n", builtin_commands[i]);
-#endif
+            DEBUG_PRINT("Calling %s from nsh_execute\n", buildin_commands[i]);
             return ((*builtin_funcs[i])(args));
         }
     }
