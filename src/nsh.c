@@ -155,13 +155,32 @@ int nsh_exit(char** args) {
  * */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 int nsh_launch(char** args) {
-#ifdef DEBUG
-    printf("Inside nsh_launch\n");
-#endif
+    DEBUG_PRINT("Inside nsh_launch\n");
 
     /* TODO */
+    pid_t pid = fork(), wpid;
+    int status;
+
+    if(pid < 0) {
+        fprintf(stderr, "Failed to fork\n");
+        exit(EXIT_FAILURE);
+    } else if(pid == 0) {
+        /* Child process spawned */
+        if(execvp(args[0], args) == -1) {
+            fprintf(stderr, "Failed to launch\n");
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        /* Parent process */
+        do {
+            wpid = waitpid(pid, &status, WUNTRACED);
+            DEBUG_PRINT("wpid: %d\n", wpid);
+        } while(!WIFEXITED(status) && !WIFSIGNALED(status));
+    }
+
     return 1;
 }
 #pragma GCC diagnostic pop
