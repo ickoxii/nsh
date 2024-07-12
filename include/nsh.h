@@ -38,6 +38,32 @@ typedef int Bool;
 #define NSH_TOK_SIZE 64
 #define NUM_BUILTINS 4
 
+/** Big debugger guy */
+#ifdef DEBUG
+#define DEBUG_PRINT(...) fprintf(stdout, __VA_ARGS__)
+#else
+#define DEBUG_PRINT(...) do {} while(0)
+#endif
+
+#ifdef DEBUG
+#define DEBUG_PRINT_ERR(...) fprintf(stderr, __VA_ARGS__)
+#else
+#define DEBUG_PRINT_ERR(...) do {} while(0)
+#endif
+
+#ifdef DEBUG
+#define DEBUG_PRINT_TOKENS(args) do {\
+    int pos = 0;\
+    DEBUG_PRINT("tokens\n");\
+    while(args[pos] != NULL) {\
+        DEBUG_PRINT("tok[%d]: %s\n", pos, args[pos]);\
+        ++pos;\
+    }\
+} while(0)
+#else
+#define DEBUG_PRINT_TOKENS(args) do {} while(0)
+#endif
+
 /** Prototypes **/
 void nsh_loop(void); /** Main loop **/
 
