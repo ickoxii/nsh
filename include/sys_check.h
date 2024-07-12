@@ -70,3 +70,5 @@ int main(int argc, char *argv[]) {
 }
 #pragma GCC diagnostic pop
 */
+
+#endif
