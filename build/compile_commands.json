@@ -1,6 +1,6 @@
 [
   {
-    "directory": "/Users/ickoxii/projects/personal/nsh/",
+    "directory": "/Users/ickoxii/projects/nsh/",
     "command": "clang -I./include -Wall -Werror -Wextra -pedantic",
     "file": "src/main.c"
   }
