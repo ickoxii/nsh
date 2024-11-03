@@ -14,9 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-int main(int argc, char **argv) {
+int main(void) {
     FILE *test_file_ptr = tmpfile();
     
     if(!test_file_ptr) {
@@ -48,4 +46,3 @@ int main(int argc, char **argv) {
 
     return EXIT_SUCCESS;
 }
-#pragma GCC diagnostic pop

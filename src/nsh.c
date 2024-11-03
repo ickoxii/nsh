@@ -37,11 +37,11 @@ int (*builtin_funcs[])(char**) = {
   *   3. **Execute**: Run the parsed command.
   * */
 void nsh_loop(void) {
-    DEBUG_PRINT("Inside nsh_loop\n");
-
     char *line;
     char **args;
     int status;
+
+    DEBUG_PRINT("Inside nsh_loop\n");
 
     do {
         char *pwd = getcwd(NULL, 0);
@@ -72,8 +72,10 @@ void nsh_loop(void) {
  * list the contents of that directory.
  * */
 int nsh_ls(char** args) {
-    DEBUG_PRINT("Inside nsh_ls\n");
     DIR *dir;
+    struct dirent *entry;
+
+    DEBUG_PRINT("Inside nsh_ls\n");
 
     if(args[1] == NULL) {
         dir = opendir(".");
@@ -85,8 +87,6 @@ int nsh_ls(char** args) {
         fprintf(stderr, "Could not open directory\n");
         return 1;
     }
-
-    struct dirent *entry;
 
     while((entry = readdir(dir)) != NULL) {
         printf("%s\n", entry->d_name);
@@ -121,11 +121,13 @@ int nsh_cd(char** args) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 int nsh_help(char** args) {
+    int i;
+
     DEBUG_PRINT("Inside nsh_help\n");
 
     printf("\nWelcome to nsh, the [N]ano [SH]ell!\n");
     printf("Below is a list of built-in commands:\n");
-    for(int i = 0; i < NUM_BUILTINS; ++i) {
+    for(i = 0; i < NUM_BUILTINS; ++i) {
         printf("  %s\n", builtin_commands[i]);
     }
     printf("\n");
@@ -153,11 +155,10 @@ int nsh_exit(char** args) {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 int nsh_launch(char** args) {
-    DEBUG_PRINT("Inside nsh_launch\n");
-
-    /* TODO */
     pid_t pid = fork(), wpid;
     int status;
+
+    DEBUG_PRINT("Inside nsh_launch\n");
 
     if(pid < 0) {
         fprintf(stderr, "Failed to fork\n");
@@ -187,18 +188,18 @@ int nsh_launch(char** args) {
  * not allow for a command to span multiple lines.
  * */
 char* nsh_getline(void) {
-    DEBUG_PRINT("Inside nsh_getline\n");
-
     char* line = malloc(NSH_BUFF_SIZE * sizeof(char));
     int buff_capacity = NSH_BUFF_SIZE;
+    char ch;
+    int buff_size = 0;
+
+    DEBUG_PRINT("Inside nsh_getline\n");
 
     if(!line) {
         fprintf(stderr, "nsh_get_line malloc failed");
         exit(EXIT_FAILURE);
     }
 
-    char ch;
-    int buff_size = 0;
     for(;;) {
         ch = getchar();
 
@@ -232,11 +233,12 @@ char* nsh_getline(void) {
  * Tokenizes the line input by user.
  * */
 char** nsh_tokenize(char* line) {
-    DEBUG_PRINT("Inside nsh_tokenize\n");
-
     int buff_size = NSH_TOK_SIZE;
     char **tokens = malloc(buff_size * sizeof(char));
     char *token, **tokens_backup;
+    int ndx = 0;
+
+    DEBUG_PRINT("Inside nsh_tokenize\n");
 
     if(!tokens) {
         fprintf(stderr, "realloc fail in tokenize\n");
@@ -245,7 +247,6 @@ char** nsh_tokenize(char* line) {
 
     token = strtok(line, NSH_DELIMS);
 
-    int ndx = 0;
     while(token != NULL) {
         tokens[ndx] = token;
         ndx++;
@@ -276,6 +277,8 @@ char** nsh_tokenize(char* line) {
  * Either calls a builtin function or launches a program.
  * */
 int nsh_execute(char** args) {
+    int i;
+
     DEBUG_PRINT("Inside nsh_execute\n");
 
     if(args[0] == NULL) {
@@ -284,7 +287,7 @@ int nsh_execute(char** args) {
         return 1;
     }
 
-    for(int i = 0; i < NUM_BUILTINS; ++i) {
+    for(i = 0; i < NUM_BUILTINS; ++i) {
         if(strcmp(builtin_commands[i], args[0]) == 0) {
             DEBUG_PRINT("Calling %s from nsh_execute\n", buildin_commands[i]);
             return ((*builtin_funcs[i])(args));

@@ -1,7 +1,0 @@
-[
-  {
-    "directory": "/Users/ickoxii/projects/nsh/",
-    "command": "clang -I./include -Wall -Werror -Wextra -pedantic",
-    "file": "src/main.c"
-  }
-]

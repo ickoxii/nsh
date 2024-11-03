@@ -24,10 +24,7 @@ FILE *logFile = NULL;
  * @param  argv    Argument vector
  * @return status code
  * */
-static_assert(TRUE, "Dummy declaration to workaround https://github.com/clangd/clangd/issues/1167");
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-int main(int argc, char **argv) {
+int main(void) {
     /* Are we cooking? */
 #ifdef DEBUG
     // logFile = fopen(LOG_FILE_NAME, "a"); /* Open in append mode */
@@ -43,4 +40,3 @@ int main(int argc, char **argv) {
 
     return EXIT_SUCCESS;
 }
-#pragma GCC diagnostic pop
